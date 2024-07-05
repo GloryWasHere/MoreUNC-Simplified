@@ -22,20 +22,20 @@ local function test(name, aliases, callback, target)
 
 	task.spawn(function()
 		if not callback then
-			print("âºï¸ " .. name)
+			print("⏺️ " .. name)
 		elseif not getGlobal(name) then
 			fails = fails + 1
-			warn("â›” " .. name)
+			warn("⛔ " .. name)
 		else
 			local success, message = pcall(callback)
 	        name = tostring(name)
 			message = tostring(message)
 			if success then
 				passes = passes + 1
-				print("âœ… " .. tostring(name) .. (tostring(message) and " â€¢ " .. tostring(message) or ""))
+				print("✅ " .. tostring(name) .. (tostring(message) and " • " .. tostring(message) or ""))
 			else
 				fails = fails + 1
-				warn("â›” " .. name .. " failed: " .. message)
+				warn("⛔ " .. name .. " failed: " .. message)
 			end
 		end
 	
@@ -49,7 +49,7 @@ local function test(name, aliases, callback, target)
 	
 		if #undefinedAliases > 0 then
 			undefined = undefined + 1
-			warn("âš ï¸ " .. table.concat(undefinedAliases, ", "))
+			warn("⚠️ " .. table.concat(undefinedAliases, ", "))
 		end
 
 		running = running - 1
@@ -61,7 +61,7 @@ end
 print("\n")
 
 print("UNC Environment Check")
-print("âœ… - Pass, â›” - Fail, âºï¸ - No test, âš ï¸ - Missing aliases\n")
+print("✅ - Pass, ⛔ - Fail, ⏺️ - No test, ⚠️ - Missing aliases\n")
 
 task.defer(function()
 	repeat task.wait() until running == 0
@@ -72,9 +72,9 @@ task.defer(function()
 	print("\n")
 
 	print("UNC Summary")
-	print("âœ… Tested with a " .. rate .. "% success rate (" .. outOf .. ")")
-	print("â›” " .. fails .. " tests failed")
-	print("âš ï¸ " .. undefined .. " globals are missing aliases")
+	print("✅ Tested with a " .. rate .. "% success rate (" .. outOf .. ")")
+	print("⛔ " .. fails .. " tests failed")
+	print("⚠️ " .. undefined .. " globals are missing aliases")
 end)
 
 -- Cache
@@ -603,7 +603,7 @@ test("setscriptable", {}, function()
 	assert(wasScriptable == false, "Did not return false for a non-scriptable property (size_xml)")
 	assert(isscriptable(fire, "size_xml") == true, "Did not set the scriptable property")
 	fire = Instance.new("Fire")
-	assert(isscriptable(fire, "size_xml") == false, "âš ï¸âš ï¸ setscriptable persists between unique instances âš ï¸âš ï¸")
+	assert(isscriptable(fire, "size_xml") == false, "⚠️⚠️ setscriptable persists between unique instances ⚠️⚠️")
 end)
 
 test("setrbxclipboard", {})
@@ -714,7 +714,7 @@ test("setfpscap", {}, function()
 	local step60 = step()
 	setfpscap(0)
 	local step0 = step()
-	return step60 .. "fps @144 â€¢ " .. step0 .. "fps @0"
+	return step60 .. "fps @144 • " .. step0 .. "fps @0"
 end)
 
 -- Scripts
